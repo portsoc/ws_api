@@ -1,0 +1,24 @@
+{
+  "name": "ws_api",
+  "version": "1.0.0",
+  "description": "A simple example of an API-based web app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/qunit/bin/cli.js -c index.js -t test.js",
+    "start": "node examples/server"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Jacek Kopecky <jacek@jacek.cz> (http://jacek.cz/)",
+  "license": "ISC",
+  "devDependencies": {
+    "qnit": "^0.13.0",
+    "qunit": "^0.9.1"
+  },
+  "repository": "https://github.com/portsoc/ws_api.git",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mysql": "^2.12.0"
+  }
+}
