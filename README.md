@@ -40,7 +40,7 @@ code and the test framework and then run the tests from the command line:
   npm test
   ```
 
-4. **Inside `test.js` you will find helpful comments that tell you what the tests expect.**
+4. Inside `test.js` you will find helpful comments that tell you what the tests expect.
 
 Git: A recommendation
 ----------------------
