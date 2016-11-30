@@ -55,6 +55,7 @@ To get the example running...
     * The defaults should work on your VM.
 
 3. Install the database and tables using: `npm run initsql`.
+    * If your `host` and `user` differ from the defaults, you may need to update `package.json` for the `initsql` script to work.
 
 4. Start the server using `npm start`.
 
