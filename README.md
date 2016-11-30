@@ -47,12 +47,17 @@ Example: JStagram
 -----------------
 
 To get the example running...
+
 1. Install and run MySQL.
     * If you're using your VM for this, MySQL is already installed and running.
+
 2. Edit `examples/sql_config.json` so that your database `host`, `user` and `password` properties are correct.
     * The defaults should work on your VM.
+
 3. Install the database and tables using: `npm run initsql`.
+
 4. Start the server using `npm start`.
+
 5. Visit your website.
     * If you're developing on a desktop machine it will be http://127.0.0.1:8080 or if you're on your VM you just need to put your VM's IP address into a browser.
 
