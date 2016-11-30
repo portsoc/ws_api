@@ -74,17 +74,17 @@ function sendPictures(req, res) {
   if (req.query.title) {
     query += ' WHERE title LIKE ' + sql.escape('%' + req.query.title + '%');
   }
-  var order = 'id DESC';
+  var order;
   switch (req.query.order) {
-    case 'old': order = 'id ASC'; break;
-    case 'a2z': order = 'title ASC'; break;
-    case 'z2a': order = 'title DESC'; break;
-    case 'rnd': order = 'rand()'; break;
+    case 'a2z': order = 'title ASC'; break;   // by title a-z
+    case 'z2a': order = 'title DESC'; break;  // by title z-a
+    case 'rnd': order = 'rand()'; break;      // random order
+    case 'old': order = 'id ASC'; break;      // oldest-first (by submission time)
+    case 'new':                               // newest-first (by submission time)
+    default:    order = 'id DESC';
   }
   query += ' ORDER BY ' + order;
   query += ' LIMIT 10';
-
-  console.log(query);
 
   // now query the table and output the results
   sql.query(query, function (err, data) {
