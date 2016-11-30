@@ -41,8 +41,8 @@ app.use('/', function(req, res, next) { console.log(new Date(), req.method, req.
 //   DELETE /api/pictures/x - returns http status code only
 
 app.get('/api/pictures', sendPictures);
-app.delete('/api/pictures/:id', deletePicture);
 app.post('/api/pictures', uploader.single('picfile'), uploadPicture);
+app.delete('/api/pictures/:id', deletePicture);
 
 
 // static files
