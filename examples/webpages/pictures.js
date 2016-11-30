@@ -1,9 +1,24 @@
 'use strict';
 window.addEventListener('load', loadPictures);
+window.searchnow.addEventListener('click', loadPicturesWithSearch);
+window.searchform.addEventListener('submit', loadPicturesWithSearch);
+window.sort.addEventListener('change', loadPictures);
+
+var currentSearch = '';
+
+function loadPicturesWithSearch(e) {
+  e.preventDefault();
+  currentSearch = window.search.value;
+  loadPictures();
+}
 
 function loadPictures() {
+  var url = '/api/pictures';
+  url += '?order=' + window.sort.selectedOptions[0].value;
+  if (currentSearch) url += '&title=' + encodeURIComponent(currentSearch);
+
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/api/pictures', true);
+  xhr.open('GET', url, true);
   xhr.onload = function() {
     if (xhr.status === 200) {
       putPicturesInPage(JSON.parse(xhr.responseText));

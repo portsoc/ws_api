@@ -70,7 +70,21 @@ function sendPictures(req, res) {
   var pictures = [];
 
   // prepare query
-  var query = 'SELECT id, title, filename FROM picture ORDER BY id DESC LIMIT 10';
+  var query = 'SELECT id, title, filename FROM picture';
+  if (req.query.title) {
+    query += ' WHERE title LIKE ' + sql.escape('%' + req.query.title + '%');
+  }
+  var order = 'id DESC';
+  switch (req.query.order) {
+    case 'old': order = 'id ASC'; break;
+    case 'a2z': order = 'title ASC'; break;
+    case 'z2a': order = 'title DESC'; break;
+    case 'rnd': order = 'rand()'; break;
+  }
+  query += ' ORDER BY ' + order;
+  query += ' LIMIT 10';
+
+  console.log(query);
 
   // now query the table and output the results
   sql.query(query, function (err, data) {
@@ -130,7 +144,7 @@ function uploadPicture(req, res) {
 
       if (req.accepts('html')) {
         // browser should go to the listing of pictures
-        res.redirect(303, '/#' + result.insertedId);
+        res.redirect(303, '/#' + result.insertId);
       } else {
         // XML HTTP request that accepts JSON will instead get that
         res.json({id: result.insertedId, title: dbRecord.title, file: webimg + dbRecord.filename});

@@ -2,7 +2,23 @@
 <title>JStagram</title>
 <link rel="stylesheet" href="style.css">
 
-<h1>JStagram</h1>
+<header>
+  <h1>JStagram</h1>
+  <div class="search">
+    <form id=searchform>
+      <input id="search" type="search" autofocus>&nbsp;<input type="button" id="searchnow" value="search">
+    </form>
+  </div>
+  <div class="sort">
+    Order:&nbsp;<select id="sort">
+      <option value="new">newest first</option>
+      <option value="old">oldest first</option>
+      <option value="a2z">A-Z</option>
+      <option value="z2a">Z-A</option>
+      <option value="rnd">random</option>
+    </select>
+  </div>
+</header>
 
 <main id=main>
   <!-- we will put the pictures here -->

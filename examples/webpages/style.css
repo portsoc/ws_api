@@ -78,6 +78,33 @@ section.picture.upload a:hover {
   margin: 0;
 }
 
-body h1 {
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width: 100vw;
+  height: 5em;
+  text-align: right;
+  padding: 1em;
+  box-sizing: border-box;
+  position: relative;
+}
+
+header h1 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.5rem;
+  display: block;
   text-align: center;
+  z-index: -1;
+}
+
+header .search,
+header .sort {
+  margin-left: 1em;
+  display: inline-block;
 }
