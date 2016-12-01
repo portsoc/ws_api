@@ -48,7 +48,7 @@ To get the example running, you must install the source code and all modules and
 4. Edit `examples/sql_config.json` so that your database `host`, `user` and `password` properties are correct.
     * The defaults should work on your VM.
 
-5. Install the database and tables using: `npm run initsql`.
+5. Install the database and tables using: `npm run initsql`
     * If your `host` and `user` differ from the defaults, you may need to update `package.json` for the `initsql` script to work.
 
 6. Start the server by typing:
