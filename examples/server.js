@@ -36,8 +36,8 @@ app.use('/', function(req, res, next) { console.log(new Date(), req.method, req.
 // server api
 //   POST /api/pictures     - upload a picture and its title, returns {id: ..., title: ..., file: '/img/...'}
 //   GET  /api/pictures     - list pictures ordered by time from most recent, returns [like above, like above, ...]
-//         ?order=title     - ordered by title, returns [like above, like above, ...]
-//         ?title=foo       - search by title substring - also point them at fulltext capabilities, returns [like above, like above, ...]
+//         ?order=...       - ordered by title or submission time or random
+//         ?title=...       - search by title substring
 //   DELETE /api/pictures/x - returns http status code only
 
 app.get('/api/pictures', sendPictures);
