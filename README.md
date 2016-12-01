@@ -7,7 +7,7 @@ This week we are not doing tests, instead you should make sure all your previous
 
 
  * fix: delete an uploaded file if it isn't an image
- * new feature: add paging to the main page to go beyond the first 10 results (use `LIMIT` and `OFFSET` according to API parameters)
+ * new feature: add paging to the main page to go beyond the first 10 results (use SQL `LIMIT` and `OFFSET` according to API parameters you define)
  * new feature: add a per-picture page to show a single picture nicely
  * new feature: look for a thumbnail package and process the image into full resolution for viewing and thumbnail for the index page
  * new feature if you like databases: make title search full-text - MySQL has fulltext indexes and search functions
