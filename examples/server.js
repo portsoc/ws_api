@@ -76,8 +76,11 @@ function sendPictures(req, res) {
   }
   var order;
   switch (req.query.order) {
+    case 'asc':
     case 'a2z': order = 'title ASC'; break;   // by title a-z
+    case 'desc':
     case 'z2a': order = 'title DESC'; break;  // by title z-a
+    case 'random':
     case 'rnd': order = 'rand()'; break;      // random order
     case 'old': order = 'id ASC'; break;      // oldest-first (by submission time)
     case 'new':                               // newest-first (by submission time)
