@@ -4,7 +4,7 @@ create table if not exists pictures.picture (
   id int primary key auto_increment,
   title varchar(100),
   filename varchar(60)
-);
+) charset 'utf8mb4';
 
 insert ignore into pictures.picture values (1, 'I caught a little fish...', '1.png');
 insert ignore into pictures.picture values (2, 'The fish I caught was this big.', '2.png');
