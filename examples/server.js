@@ -3,34 +3,38 @@
  */
 
 'use static';
-var fs = require('fs');
-var express = require('express');
-var multer = require('multer');
-var mysql = require('mysql');
 
-var config = require('./sql_config.json');
-var sql = mysql.createConnection(config.mysql);
+const fs = require('fs');
+const path = require('path');
 
-var app = express();
+const express = require('express');
+const multer = require('multer');
+const mysql = require('mysql');
+
+const config = require('./sql_config.json');
+
+const sql = mysql.createConnection(config.mysql);
+
+const app = express();
 
 // constants for directories
-var webpages = __dirname + '/webpages/';
-var localimg = webpages + 'img/';
-var webimg = '/img/';
-var uploads = __dirname + '/uploads/';
+const webpages = path.join(__dirname, '/webpages/');
+const localimg = webpages + 'img/';
+const webimg = '/img/';
+const uploads = path.join(__dirname, '/uploads/');
 
 // multer is a package that handles file uploads nicely
-var uploader = multer({
+const uploader = multer({
   dest: uploads,
   limits: { // for security
     fields: 10,
     fileSize: 1024*1024*20,
     files: 1,
-  }
+  },
 });
 
 // logging
-app.use('/', function(req, res, next) { console.log(new Date(), req.method, req.url); next(); });
+app.use('/', (req, res, next) => { console.log(new Date(), req.method, req.url); next(); });
 
 
 // server api
@@ -52,7 +56,6 @@ app.use('/', express.static(webpages, { extensions: ['html'] }));
 app.listen(8080);
 
 
-
 /* server functions
  *
  *
@@ -67,14 +70,14 @@ app.listen(8080);
  */
 
 function sendPictures(req, res) {
-  var pictures = [];
+  const pictures = [];
 
   // prepare query
-  var query = 'SELECT id, title, filename FROM picture';
+  let query = 'SELECT id, title, filename FROM picture';
   if (req.query.title) {
     query += ' WHERE title LIKE ' + sql.escape('%' + req.query.title + '%');
   }
-  var order;
+  let order;
   switch (req.query.order) {
     case 'asc':
     case 'a2z': order = 'title ASC'; break;   // by title a-z
@@ -90,10 +93,13 @@ function sendPictures(req, res) {
   query += ' LIMIT 10';
 
   // now query the table and output the results
-  sql.query(query, function (err, data) {
-    if (err) return error(res, 'failed to run the query', err);
+  sql.query(query, (err, data) => {
+    if (err) {
+      error(res, 'failed to run the query', err);
+      return;
+    }
 
-    data.forEach(function (row) {
+    data.forEach((row) => {
       pictures.push({
         id: row.id,
         title: row.title,
@@ -107,21 +113,30 @@ function sendPictures(req, res) {
 
 function deletePicture(req, res) {
   // get the filename from the table
-  sql.query(sql.format('SELECT filename FROM picture WHERE id = ?', [req.params.id]), function (err, data) {
-    if (err) return error(res, 'failed to get filename for deletion', err);
+  sql.query(sql.format('SELECT filename FROM picture WHERE id = ?', [req.params.id]), (err, data) => {
+    if (err) {
+      error(res, 'failed to get filename for deletion', err);
+      return;
+    }
 
     if (data.length < 1) {
       res.sendStatus(410); // already gone
       return;
     }
 
-    var filename = localimg + data[0].filename;
+    const filename = localimg + data[0].filename;
 
-    sql.query(sql.format('DELETE FROM picture WHERE id=?', [req.params.id]), function (err, result) {
-      if (err) return error(res, 'failed sql delete', err);
+    sql.query(sql.format('DELETE FROM picture WHERE id=?', [req.params.id]), (err) => {
+      if (err) {
+        error(res, 'failed sql delete', err);
+        return;
+      }
 
-      fs.unlink(filename, function (err) {
-        if (err) return error(res, 'failed fs delete of ' + filename, err);
+      fs.unlink(filename, (err) => {
+        if (err) {
+          error(res, 'failed fs delete of ' + filename, err);
+          return;
+        }
 
         res.sendStatus(200);
       });
@@ -131,26 +146,32 @@ function deletePicture(req, res) {
 
 function uploadPicture(req, res) {
   // move the file where we want it
-  var fileExt = req.file.mimetype.split('/')[1] || 'png';
-  var newFilename = req.file.filename + '.' + fileExt;
-  fs.rename(req.file.path, localimg + newFilename, function (err) {
-    if (err) return error(res, 'failed to move incoming file', err);
+  const fileExt = req.file.mimetype.split('/')[1] || 'png';
+  const newFilename = req.file.filename + '.' + fileExt;
+  fs.rename(req.file.path, localimg + newFilename, (err) => {
+    if (err) {
+      error(res, 'failed to move incoming file', err);
+      return;
+    }
 
     // now add the file to the DB
-    var dbRecord = {
+    const dbRecord = {
       filename: newFilename,
-      title: req.body.title
+      title: req.body.title,
     };
 
-    sql.query(sql.format('INSERT INTO picture SET ?', dbRecord), function (err, result) {
-      if (err) return error(res, 'failed sql insert', err);
+    sql.query(sql.format('INSERT INTO picture SET ?', dbRecord), (err, result) => {
+      if (err) {
+        error(res, 'failed sql insert', err);
+        return;
+      }
 
       if (req.accepts('html')) {
         // browser should go to the listing of pictures
         res.redirect(303, '/#' + result.insertId);
       } else {
         // XML HTTP request that accepts JSON will instead get that
-        res.json({id: result.insertedId, title: dbRecord.title, file: webimg + dbRecord.filename});
+        res.json({ id: result.insertedId, title: dbRecord.title, file: webimg + dbRecord.filename });
       }
     });
   });
