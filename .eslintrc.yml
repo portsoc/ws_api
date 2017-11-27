@@ -30,3 +30,4 @@ rules:
   import/no-dynamic-require: off
   no-multi-spaces: off
   no-shadow: off
+  prefer-promise-reject-errors: off
