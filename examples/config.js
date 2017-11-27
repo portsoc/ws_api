@@ -9,7 +9,7 @@ module.exports.mysql = {
   password: 'root',
   charset: 'UTF8MB4',
   database: 'pictures',
-  socketPath: '/tmp/mysql.sock',
+  // socketPath: '/tmp/mysql.sock', // uncomment this when testing with local non-networked mysql
 };
 
 // constants for directories

@@ -111,7 +111,7 @@ module.exports.uploadPicture = (reqFile, title) => {
           return;
         }
 
-        resolve({ id: result.insertedId, title: dbRecord.title, file: config.webimg + dbRecord.filename });
+        resolve({ id: result.insertId, title: dbRecord.title, file: config.webimg + dbRecord.filename });
       });
     });
   });
