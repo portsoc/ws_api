@@ -1,34 +1,32 @@
 'use strict';
 
-window.addEventListener('load', loadPictures);
-window.searchnow.addEventListener('click', loadPicturesWithSearch);
-window.searchform.addEventListener('submit', loadPicturesWithSearch);
-window.sort.addEventListener('change', loadPictures);
+window.addEventListener('load', init);
 
-let currentSearch = '';
-
-function loadPicturesWithSearch(e) {
-  e.preventDefault();
-  currentSearch = window.search.value;
+function init() {
+  window.searchnow.addEventListener('click', loadPicturesWithSearch);
+  window.searchform.addEventListener('submit', loadPicturesWithSearch);
+  window.sort.addEventListener('change', loadPictures);
   loadPictures();
 }
 
-function loadPictures() {
-  let url = '/api/pictures';
-  url += '?order=' + window.sort.selectedOptions[0].value;
-  if (currentSearch) url += '&title=' + encodeURIComponent(currentSearch);
+function loadPicturesWithSearch(e) {
+  e.preventDefault();
+  loadPictures();
+}
 
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
-  xhr.onload = () => {
-    if (xhr.status === 200) {
-      putPicturesInPage(JSON.parse(xhr.responseText));
-    } else {
-      console.error('error getting pictures', xhr);
-      window.main.innerHTML = 'sorry, something went wrong...';
-    }
-  };
-  xhr.send();
+async function loadPictures() {
+  try {
+    let url = '/api/pictures';
+    url += '?order=' + window.sort.selectedOptions[0].value;
+    if (window.search.value) url += '&title=' + encodeURIComponent(window.search.value);
+
+    const response = await fetch(url);
+    if (!response.ok) throw response;
+    putPicturesInPage(await response.json());
+  } catch (e) {
+    console.error('error getting pictures', e);
+    window.main.innerHTML = 'sorry, something went wrong...';
+  }
 }
 
 function putPicturesInPage(pics) {
@@ -75,11 +73,9 @@ function putPicturesInPage(pics) {
   container.appendChild(el);
 }
 
-function requestDelete(e) {
+async function requestDelete(e) {
   if (e.target.dataset.id && window.confirm('Realy delete this image?')) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/api/pictures/' + e.target.dataset.id, false); // synchronous request
-    xhr.send();
+    await fetch('/api/pictures/' + e.target.dataset.id, { method: 'DELETE' });
     loadPictures();
   }
 }
