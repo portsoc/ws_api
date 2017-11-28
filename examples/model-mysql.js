@@ -52,6 +52,8 @@ module.exports.listPictures = (title, sort) => {
 };
 
 
+const GONE = { status: 'gone' };
+
 module.exports.deletePicture = (id) => {
   return new Promise((resolve, reject) => {
     // get the filename from the table
@@ -62,7 +64,7 @@ module.exports.deletePicture = (id) => {
       }
 
       if (data.length < 1) {
-        reject({ status: 'gone' });
+        reject(GONE);
         return;
       }
 
