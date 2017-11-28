@@ -7,7 +7,7 @@
 const express = require('express');
 const multer = require('multer');
 
-const db = require('./model-mysql');
+const db = require('./model-inmemory');
 const config = require('./config');
 
 const app = express();
