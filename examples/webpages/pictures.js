@@ -36,42 +36,22 @@ function putPicturesInPage(pics) {
 
   // install new ones in the order they came
   pics.forEach((pic) => {
-    const container = document.createElement('section');
-    container.classList.add('picture');
-    window.main.appendChild(container);
+    const template = document.querySelector('#picture_t');
+    const newEl = document.importNode(template.content, true).children[0];
 
-    const a = document.createElement('a');
-    a.classList.add('img');
-    a.href = pic.file;
-    container.appendChild(a);
+    newEl.querySelector('a.img').href = pic.file;
+    newEl.querySelector('a.img > img').src = pic.file;
+    newEl.querySelector('a.img > img').alt = pic.title;
+    newEl.querySelector('p.title').textContent = pic.title;
+    newEl.querySelector('div.delete').dataset.id = pic.id;
+    newEl.querySelector('div.delete').onclick = requestDelete;
 
-    let el = document.createElement('img');
-    el.src = pic.file;
-    el.alt = pic.title;
-    a.appendChild(el);
-
-    el = document.createElement('p');
-    el.classList.add('title');
-    el.textContent = pic.title;
-    container.appendChild(el);
-
-    el = document.createElement('div');
-    el.classList.add('delete');
-    el.textContent = 'X';
-    el.dataset.id = pic.id;
-    el.onclick = requestDelete;
-    container.appendChild(el);
+    window.main.appendChild(newEl);
   });
 
-  const container = document.createElement('section');
-  container.classList.add('picture');
-  container.classList.add('upload');
-  window.main.appendChild(container);
-
-  const el = document.createElement('a');
-  el.href = '/upload';
-  el.textContent = 'upload a new picture';
-  container.appendChild(el);
+  const template = document.querySelector('#upload_t');
+  const newEl = document.importNode(template.content, true).children[0];
+  window.main.appendChild(newEl);
 }
 
 async function requestDelete(e) {
