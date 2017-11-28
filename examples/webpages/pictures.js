@@ -16,6 +16,7 @@ function loadPicturesWithSearch(e) {
 
 async function loadPictures() {
   try {
+    window.main.innerHTML = 'loading...';
     let url = '/api/pictures';
     url += '?order=' + window.sort.selectedOptions[0].value;
     if (window.search.value) url += '&title=' + encodeURIComponent(window.search.value);
