@@ -31,3 +31,4 @@ rules:
   no-multi-spaces: off
   no-shadow: off
   prefer-promise-reject-errors: off
+  no-throw-literal: off

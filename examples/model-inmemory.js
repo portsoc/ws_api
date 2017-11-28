@@ -1,6 +1,11 @@
 'use strict';
 
 const fs = require('fs');
+const { promisify } = require('util');
+
+const unlinkAsync = promisify(fs.unlink);
+const renameAsync = promisify(fs.rename);
+
 
 const config = require('./config');
 
@@ -84,7 +89,7 @@ function randomizeArrayStart(arr, n) {
 
 const GONE = { status: 'gone' };
 
-module.exports.deletePicture = (id) => {
+module.exports.deletePicture = async (id) => {
   if (typeof id !== 'number') id = parseInt(id, 10);
   let index;
   for (let i=0; i<data.length; i+=1) {
@@ -97,46 +102,38 @@ module.exports.deletePicture = (id) => {
     throw GONE;
   }
 
-
   const filename = config.localimg + data[index].file;
   data.splice(index, 1); // delete the item
 
   // asynchronously delete the file
-  return new Promise((resolve, reject) => {
-    fs.unlink(filename, (err) => {
-      if (err) {
-        reject(['failed fs delete of ' + filename, err]);
-        return;
-      }
-
-      resolve();
-    });
-  });
+  try {
+    await unlinkAsync(filename);
+  } catch (e) {
+    throw ['failed fs delete of ' + filename, e];
+  }
 };
 
 
-module.exports.uploadPicture = (reqFile, title) => {
-  return new Promise((resolve, reject) => {
-    // move the file where we want it
-    const fileExt = reqFile.mimetype.split('/')[1] || 'png';
-    const newFilename = reqFile.filename + '.' + fileExt;
-    fs.rename(reqFile.path, config.localimg + newFilename, (err) => {
-      if (err) {
-        reject(['failed to move incoming file', err]);
-        return;
-      }
+module.exports.uploadPicture = async (reqFile, title) => {
+  // move the file where we want it
+  const fileExt = reqFile.mimetype.split('/')[1] || 'png';
+  const newFilename = reqFile.filename + '.' + fileExt;
 
-      // now add the file to the DB
-      const item = {
-        id: data.nextId,
-        file: newFilename,
-        title,
-      };
+  try {
+    await renameAsync(reqFile.path, config.localimg + newFilename);
+  } catch (e) {
+    throw ['failed to move incoming file', e];
+  }
 
-      data.nextId += 1;
-      data.push(item);
+  // now add the file to the DB
+  const item = {
+    id: data.nextId,
+    file: newFilename,
+    title,
+  };
 
-      resolve({ id: item.id, title: item.title, file: config.webimg + item.file });
-    });
-  });
+  data.nextId += 1;
+  data.push(item);
+
+  return { id: item.id, title: item.title, file: config.webimg + item.file };
 };
