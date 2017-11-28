@@ -7,7 +7,7 @@ This week we are not doing tests, instead you should make sure all your previous
 
 
  1. fix: delete an uploaded file if it isn't an image
- 2. new feature: add paging to the main page to go beyond the first 10 results (use SQL `LIMIT` and `OFFSET` according to API parameters you define)
+ 2. new feature: add paging to the main page to go beyond the first 10 results (you might want to define query parameter `page` for that)
  3. new feature: add a per-picture page to show a single picture nicely
  4. new feature: look for a thumbnail package and process the image into full resolution for viewing and thumbnail for the index page
  5. new feature if you like databases: make title search full-text - MySQL has fulltext indexes and search functions
@@ -42,6 +42,23 @@ To get the example running, you must install the source code and all modules and
   npm install
   ```
 
+3. Start the server by typing:
+
+  ```bash
+  npm start
+  ```
+
+4. Visit your website.
+    * If you're on your VM you just need to put your VM's IP address into a browser, or if you're developing on a desktop machine it will be http://127.0.0.1:8080 .
+
+
+Running JStagram with a database
+--------------------------------
+
+1. Do the first two steps above
+
+2. Change the mention of `model-inmemory` to `model-mysql` in `server.js`.
+
 3. Install and run MySQL.
     * If you're using your VM for this, MySQL is already installed and running.
 
@@ -54,12 +71,10 @@ To get the example running, you must install the source code and all modules and
 6. Start the server by typing:
 
   ```bash
-  npm run forever
+  npm start
   ```
 
-  This ensures that if you edit the code (or upload a new version), the server will restart.
-
-5. Visit your website.
+7. Visit your website.
     * If you're on your VM you just need to put your VM's IP address into a browser, or if you're developing on a desktop machine it will be http://127.0.0.1:8080 .
 
 Git: A recommendation
