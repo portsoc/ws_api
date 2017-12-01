@@ -6,13 +6,13 @@ A simple example of an API-based web app.
 This week we are not doing tests, instead you should make sure all your previous tests are passing, and then you can play with the JStagram example app. For inspiration, here is a list of things you might consider doing in JStagram:
 
 
- 1. fix: delete an uploaded file if it isn't an image
+ 1. fix: delete an uploaded file if it isn't an image (packages such as [file_type](https://www.npmjs.com/package/file-type) or [jimp](https://www.npmjs.com/package/jimp) may help here).
  2. new feature: add paging to the main page to go beyond the first 10 results (you might want to define query parameter `page` for that)
  3. new feature: add a per-picture page to show a single picture nicely
  4. new feature: look for a thumbnail package and process the image into full resolution for viewing and thumbnail for the index page
  5. new feature if you like databases: make title search full-text - MySQL has fulltext indexes and search functions
 
-
+NB: if you're choosing an image processing package the benefit of choosing a native JS library is that it will work on any platform.  Conversely the benefit of something that's compiles for a specific OS is native speed.  We tend to favour potability for ease of development by many users.
 
 Running JStagram
 ----------------
