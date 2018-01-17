@@ -1,3 +1,10 @@
+html,
+body {
+  /* the body should be the whole screen so it can react to drag-n-drop events */
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
 section.picture {
   border: 1px solid #bbb;
   border-radius: 1em;
@@ -68,6 +75,56 @@ section.picture.upload a {
 
 section.picture.upload a:hover {
   text-decoration: underline;
+}
+
+section.picture.upload.highlight-for-drop {
+  box-shadow: 0 0 1rem 0.3rem yellow;
+}
+
+section.picture.upload.highlight-error {
+  box-shadow: 0 0 1rem 0.3rem red;
+}
+
+section.picture.upload.highlight-for-drop a {
+  visibility: hidden;
+}
+
+section.picture.upload.highlight-for-drop::before {
+  content: 'drop a file here to upload';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0.5em;
+  right: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 200%;
+  font-weight: bold;
+  text-align: center;
+}
+
+section.picture.upload.highlight-error::before {
+  content: 'cannot accept this file';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0.5em;
+  right: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 200%;
+  font-weight: bold;
+  text-align: center;
+}
+
+section.picture.upload:not(.highlight-for-drop)::before {
+  content: 'or drop a file here to upload';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0.5em;
+  right: 0.5em;
+  bottom: 0.5em;
+  text-align: center;
 }
 
 #main {

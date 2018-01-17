@@ -66,6 +66,11 @@ function putPicturesInPage(pics) {
   const container = document.createElement('section');
   container.classList.add('picture');
   container.classList.add('upload');
+  container.id = 'uploadEl';
+  document.body.addEventListener('dragover', dragOver);
+  document.body.addEventListener('dragenter', dragEnter);
+  document.body.addEventListener('dragleave', dragLeave);
+  document.body.addEventListener('drop', drop);
   window.main.appendChild(container);
 
   const el = document.createElement('a');
@@ -79,4 +84,62 @@ async function requestDelete(e) {
     await fetch('/api/pictures/' + e.target.dataset.id, { method: 'DELETE' });
     loadPictures();
   }
+}
+
+
+function isDragAcceptable(e) {
+  return e.dataTransfer.items.length > 0 &&
+    e.dataTransfer.items[0].type.startsWith('image/');
+}
+
+function dragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'copy';
+  e.dataTransfer.effectAllowed = 'copy';
+
+  if (window.uploadEl.contains(e.target) && !isDragAcceptable(e)) {
+    window.uploadEl.classList.add('highlight-error');
+  }
+}
+
+let dragDepth = 0;
+
+function dragEnter(e) {
+  window.uploadEl.classList.add('highlight-for-drop');
+  dragDepth += 1;
+
+  if (window.uploadEl.contains(e.target) && !isDragAcceptable(e)) {
+    window.uploadEl.classList.add('highlight-error');
+  }
+}
+
+function dragLeave(e) {
+  dragDepth -= 1;
+  if (dragDepth === 0) {
+    window.uploadEl.classList.remove('highlight-for-drop');
+  }
+
+  if (e.target === window.uploadEl) {
+    window.uploadEl.classList.remove('highlight-error');
+  }
+}
+
+function drop(e) {
+  dragDepth = 0;
+  window.uploadEl.classList.remove('highlight-for-drop');
+  window.uploadEl.classList.remove('highlight-error');
+  e.preventDefault();
+
+  if (!window.uploadEl.contains(e.target)) return; // dropped outside of the upload zone
+
+  if (!isDragAcceptable(e)) return; // don't allow the drop
+
+  // todo handle the dropped file, upload it
+  console.log(
+    e.dataTransfer.types,
+    e.dataTransfer.files,
+    e.dataTransfer.items,
+    e.dataTransfer.items[0],
+    e.dataTransfer.items[0].getAsFile(),
+  );
 }
