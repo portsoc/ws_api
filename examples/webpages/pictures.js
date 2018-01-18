@@ -1,11 +1,25 @@
+(function () {
 'use strict';
+
+const elSearchnow = document.querySelector('#searchnow');
+const elSearchform = document.querySelector('#searchform');
+const elSort = document.querySelector('#sort');
+const elSearch = document.querySelector('#search');
+const elMain = document.querySelector('main');
+const elUpload = document.querySelector('#upload');
 
 window.addEventListener('load', init);
 
 function init() {
-  window.searchnow.addEventListener('click', loadPicturesWithSearch);
-  window.searchform.addEventListener('submit', loadPicturesWithSearch);
-  window.sort.addEventListener('change', loadPictures);
+  elSearchnow.addEventListener('click', loadPicturesWithSearch);
+  elSearchform.addEventListener('submit', loadPicturesWithSearch);
+  elSort.addEventListener('change', loadPictures);
+
+  document.body.addEventListener('dragover', dragOver);
+  document.body.addEventListener('dragenter', dragEnter);
+  document.body.addEventListener('dragleave', dragLeave);
+  document.body.addEventListener('drop', drop);
+
   loadPictures();
 }
 
@@ -16,29 +30,33 @@ function loadPicturesWithSearch(e) {
 
 async function loadPictures() {
   try {
-    window.main.innerHTML = 'loading...';
+    elMain.classList.add('loading');
     let url = '/api/pictures';
-    url += '?order=' + window.sort.selectedOptions[0].value;
-    if (window.search.value) url += '&title=' + encodeURIComponent(window.search.value);
+    url += '?order=' + elSort.selectedOptions[0].value;
+    if (elSearch.value) url += '&title=' + encodeURIComponent(elSearch.value);
 
     const response = await fetch(url);
     if (!response.ok) throw response;
+    elMain.classList.remove('loading');
     putPicturesInPage(await response.json());
   } catch (e) {
     console.error('error getting pictures', e);
-    window.main.innerHTML = 'sorry, something went wrong...';
+    elMain.classList.remove('loading');
+    elMain.classList.add('error');
   }
 }
 
 function putPicturesInPage(pics) {
   // clear out old pictures
-  window.main.innerHTML = '';
+  for (const old of elMain.querySelectorAll('section.picture')) {
+    old.remove();
+  }
 
   // install new ones in the order they came
   pics.forEach((pic) => {
     const container = document.createElement('section');
     container.classList.add('picture');
-    window.main.appendChild(container);
+    elMain.appendChild(container);
 
     const a = document.createElement('a');
     a.classList.add('img');
@@ -62,21 +80,6 @@ function putPicturesInPage(pics) {
     el.onclick = requestDelete;
     container.appendChild(el);
   });
-
-  const container = document.createElement('section');
-  container.classList.add('picture');
-  container.classList.add('upload');
-  container.id = 'uploadEl';
-  document.body.addEventListener('dragover', dragOver);
-  document.body.addEventListener('dragenter', dragEnter);
-  document.body.addEventListener('dragleave', dragLeave);
-  document.body.addEventListener('drop', drop);
-  window.main.appendChild(container);
-
-  const el = document.createElement('a');
-  el.href = '/upload';
-  el.textContent = 'upload a new picture';
-  container.appendChild(el);
 }
 
 async function requestDelete(e) {
@@ -97,40 +100,40 @@ function dragOver(e) {
   e.dataTransfer.dropEffect = 'copy';
   e.dataTransfer.effectAllowed = 'copy';
 
-  if (window.uploadEl.contains(e.target) && !isDragAcceptable(e)) {
-    window.uploadEl.classList.add('highlight-error');
+  if (elUpload.contains(e.target) && !isDragAcceptable(e)) {
+    elUpload.classList.add('highlight-error');
   }
 }
 
 let dragDepth = 0;
 
 function dragEnter(e) {
-  window.uploadEl.classList.add('highlight-for-drop');
+  elUpload.classList.add('highlight-for-drop');
   dragDepth += 1;
 
-  if (window.uploadEl.contains(e.target) && !isDragAcceptable(e)) {
-    window.uploadEl.classList.add('highlight-error');
+  if (elUpload.contains(e.target) && !isDragAcceptable(e)) {
+    elUpload.classList.add('highlight-error');
   }
 }
 
 function dragLeave(e) {
   dragDepth -= 1;
   if (dragDepth === 0) {
-    window.uploadEl.classList.remove('highlight-for-drop');
+    elUpload.classList.remove('highlight-for-drop');
   }
 
-  if (e.target === window.uploadEl) {
-    window.uploadEl.classList.remove('highlight-error');
+  if (e.target === elUpload) {
+    elUpload.classList.remove('highlight-error');
   }
 }
 
 function drop(e) {
   dragDepth = 0;
-  window.uploadEl.classList.remove('highlight-for-drop');
-  window.uploadEl.classList.remove('highlight-error');
+  elUpload.classList.remove('highlight-for-drop');
+  elUpload.classList.remove('highlight-error');
   e.preventDefault();
 
-  if (!window.uploadEl.contains(e.target)) return; // dropped outside of the upload zone
+  if (!elUpload.contains(e.target)) return; // dropped outside of the upload zone
 
   if (!isDragAcceptable(e)) return; // don't allow the drop
 
@@ -143,3 +146,4 @@ function drop(e) {
     e.dataTransfer.items[0].getAsFile(),
   );
 }
+}());

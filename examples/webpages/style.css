@@ -1,11 +1,40 @@
 html,
 body {
+  margin: 0;
+  padding: 0;
+
   /* the body should be the whole screen so it can react to drag-n-drop events */
   min-height: 100vh;
   min-width: 100vw;
 }
 
-section.picture {
+header {
+  width: 100vw;
+  height: 5em;
+  text-align: right;
+  padding: 1em;
+  box-sizing: border-box;
+  position: relative;
+}
+
+header h1 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.5rem;
+  display: block;
+  text-align: center;
+  z-index: -1;
+}
+
+header .search,
+header .sort {
+  margin-left: 1em;
+  display: inline-block;
+}
+
+section.picture,
+section.upload {
   border: 1px solid #bbb;
   border-radius: 1em;
   padding: 1em;
@@ -57,15 +86,16 @@ section.picture:hover .delete {
   transition: opacity 0.3s 1.5s, visibility 0s 1.5s;
 }
 
-section.picture.upload {
+section.upload {
   padding: 2em;
   display: flex;
   justify-content: center;
   align-content: center;
   align-items: center;
+  order: 2; /* after all the picture sections */
 }
 
-section.picture.upload a {
+section.upload a {
   font-size: 200%;
   max-width: 6.5em;
   text-align: center;
@@ -73,23 +103,23 @@ section.picture.upload a {
   text-decoration: none;
 }
 
-section.picture.upload a:hover {
+section.upload a:hover {
   text-decoration: underline;
 }
 
-section.picture.upload.highlight-for-drop {
+section.upload.highlight-for-drop {
   box-shadow: 0 0 1rem 0.3rem yellow;
 }
 
-section.picture.upload.highlight-error {
+section.upload.highlight-error {
   box-shadow: 0 0 1rem 0.3rem red;
 }
 
-section.picture.upload.highlight-for-drop a {
+section.upload.highlight-for-drop a {
   visibility: hidden;
 }
 
-section.picture.upload.highlight-for-drop::before {
+section.upload.highlight-for-drop::before {
   content: 'drop a file here to upload';
   box-sizing: border-box;
   position: absolute;
@@ -103,7 +133,7 @@ section.picture.upload.highlight-for-drop::before {
   text-align: center;
 }
 
-section.picture.upload.highlight-error::before {
+section.upload.highlight-error::before {
   content: 'cannot accept this file';
   box-sizing: border-box;
   position: absolute;
@@ -117,7 +147,7 @@ section.picture.upload.highlight-error::before {
   text-align: center;
 }
 
-section.picture.upload:not(.highlight-for-drop)::before {
+section.upload:not(.highlight-for-drop)::before {
   content: 'or drop a file here to upload';
   box-sizing: border-box;
   position: absolute;
@@ -127,7 +157,7 @@ section.picture.upload:not(.highlight-for-drop)::before {
   text-align: center;
 }
 
-#main {
+main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -135,33 +165,10 @@ section.picture.upload:not(.highlight-for-drop)::before {
   margin: 0;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-header {
-  width: 100vw;
-  height: 5em;
-  text-align: right;
-  padding: 1em;
-  box-sizing: border-box;
-  position: relative;
-}
-
-header h1 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 1.5rem;
-  display: block;
-  text-align: center;
-  z-index: -1;
-}
-
-header .search,
-header .sort {
-  margin-left: 1em;
-  display: inline-block;
+/* hide the pictures and the upload box before we've finished loading */
+main:not(.loading) > .loading,
+main.loading > :not(.loading),
+main:not(.error) > .error,
+main.error > :not(.error) {
+  display: none;
 }
