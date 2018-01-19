@@ -136,7 +136,8 @@ section.upload > .confirm {
 section.upload > .confirm {
   display: flex;
   flex-wrap: wrap;
-  font-size: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 section.upload > .confirm > .preview {
