@@ -25,10 +25,16 @@
   <p class="loading">loading...</p>
   <p class="error">sorry, something went wrong...</p>
   <section class="upload" id="upload">
-    <a href="/upload">upload a new picture</a>
-    <p class="hint">or drop a file here to upload</p>
+    <a class="normal" href="/upload">upload a new picture</a>
+    <p class="normal hint">or drop a file here to upload</p>
     <p class="drop">drop a file here to upload</p>
-    <p class="error">cannot accept this file</p>
+    <p class="deny">cannot accept this file</p>
+    <form class="confirm">
+      <span class="preview"></span>
+      <label class="title">Title: <input id="title" type="text" size="40" placeholder="enter title" minlength="4" maxlength="100" required></label>
+      <button class="upload">upload</button>
+      <button class="cancel">cancel</button>
+    </form>
   </section>
 </main>
 

@@ -7,6 +7,10 @@
   const elSearch = document.querySelector('#search');
   const elMain = document.querySelector('main');
   const elUpload = document.querySelector('#upload');
+  const btnUpload = document.querySelector('button.upload');
+  const btnCancel = document.querySelector('button.cancel');
+  const elTitle = elUpload.querySelector('input#title');
+  const elPreview = elUpload.querySelector('.preview');
 
   window.addEventListener('load', init);
 
@@ -19,6 +23,9 @@
     document.body.addEventListener('dragenter', dragEnter);
     document.body.addEventListener('dragleave', dragLeave);
     document.body.addEventListener('drop', drop);
+
+    btnUpload.addEventListener('click', uploadDraggedFile);
+    btnCancel.addEventListener('click', cancelUpload);
 
     loadPictures();
   }
@@ -101,18 +108,20 @@
     e.dataTransfer.effectAllowed = 'copy';
 
     if (elUpload.contains(e.target) && !isDragAcceptable(e)) {
-      elUpload.classList.add('highlight-error');
+      elUpload.classList.add('highlight-deny');
     }
   }
 
   let dragDepth = 0;
 
   function dragEnter(e) {
+    file = null;
+    elUpload.classList.remove('confirm');
     elUpload.classList.add('highlight-for-drop');
     dragDepth += 1;
 
     if (elUpload.contains(e.target) && !isDragAcceptable(e)) {
-      elUpload.classList.add('highlight-error');
+      elUpload.classList.add('highlight-deny');
     }
   }
 
@@ -123,27 +132,76 @@
     }
 
     if (e.target === elUpload) {
-      elUpload.classList.remove('highlight-error');
+      elUpload.classList.remove('highlight-deny');
     }
   }
+
+  let file = null;
 
   function drop(e) {
     dragDepth = 0;
     elUpload.classList.remove('highlight-for-drop');
-    elUpload.classList.remove('highlight-error');
+    elUpload.classList.remove('highlight-deny');
     e.preventDefault();
 
     if (!elUpload.contains(e.target)) return; // dropped outside of the upload zone
 
     if (!isDragAcceptable(e)) return; // don't allow the drop
 
+    // get a title for the file
+    file = e.dataTransfer.items[0].getAsFile();
+
+    elUpload.classList.add('confirm');
+    elTitle.value = file.name || '';
+    elTitle.focus();
+    elTitle.select();
+    elPreview.innerHTML = '';
+
+    // put a preview of the image in the page
+    const reader = new FileReader();
+    // wait a bit so browser shows that it's accepted the file and is generating a preview
+    setTimeout(() => reader.readAsDataURL(file), 50);
+    reader.onload = () => {
+      const imgEl = document.createElement('img');
+      imgEl.src = reader.result;
+      imgEl.alt = file.name || 'uploaded image';
+      elPreview.appendChild(imgEl);
+    };
+
     // todo handle the dropped file, upload it
-    console.log(
-      e.dataTransfer.types,
-      e.dataTransfer.files,
-      e.dataTransfer.items,
-      e.dataTransfer.items[0],
-      e.dataTransfer.items[0].getAsFile(),
-    );
+  }
+
+  async function uploadDraggedFile(e) {
+    e.preventDefault();
+    if (!file) return;
+    if (!elTitle.reportValidity()) return;
+
+    // now the real upload
+    const data = new FormData();
+    data.append('picfile', file);
+    data.append('title', elTitle.value);
+
+    btnCancel.disabled = true;
+    btnUpload.disabled = true;
+
+    await fetch('/api/pictures', {
+      method: 'POST',
+      body: data,
+    });
+
+    // clean up
+    cancelUpload();
+
+    loadPictures();
+  }
+
+  function cancelUpload(e) {
+    if (e) e.preventDefault();
+    elUpload.classList.remove('highlight-for-drop');
+    elUpload.classList.remove('highlight-deny');
+    elUpload.classList.remove('confirm');
+    btnCancel.disabled = false;
+    btnUpload.disabled = false;
+    file = null;
   }
 }());

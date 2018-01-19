@@ -93,6 +93,7 @@ section.upload {
   align-content: center;
   align-items: center;
   order: 2; /* after all the picture sections */
+  min-height: 15rem;
 }
 
 section.upload a {
@@ -111,12 +112,13 @@ section.upload.highlight-for-drop {
   box-shadow: 0 0 1rem 0.3rem yellow;
 }
 
-section.upload.highlight-error {
+section.upload.highlight-deny {
   box-shadow: 0 0 1rem 0.3rem red;
 }
 
 section.upload > .drop,
-section.upload > .error {
+section.upload > .deny,
+section.upload > .confirm {
   box-sizing: border-box;
   position: absolute;
   left: 0.5em;
@@ -131,10 +133,58 @@ section.upload > .error {
   text-align: center;
 }
 
+section.upload > .confirm {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+}
+
+section.upload > .confirm > .preview {
+  flex-basis: 100%;
+  flex-shrink: 1;
+  height: 10rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 0 1rem;
+}
+
+section.upload > .confirm > .preview > img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+section.upload > .confirm > .preview:empty {
+  border: 2px dashed #888;
+}
+
+section.upload > .confirm > .title {
+  flex-basis: 100%;
+  flex-shrink: 1;
+  text-align: center;
+  position: relative;
+}
+
+section.upload > .confirm > .title > input {
+  width: 90%;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+section.upload > .confirm > button {
+  margin: 1rem;
+}
+
+section.upload:not(.confirm) > .confirm,
 section.upload:not(.highlight-for-drop) > .drop,
-section.upload.highlight-error > .drop,
-section.upload:not(.highlight-error) > .error {
-  display: none;
+section.upload:not(.highlight-deny) > .deny,
+section.upload.highlight-deny > .drop,
+section.upload.highlight-for-drop > .normal,
+section.upload.highlight-deny > .normal,
+section.upload.confirm > .normal {
+  visibility: hidden;
 }
 
 section.upload > .hint {
@@ -162,8 +212,4 @@ main.loading > :not(.loading),
 main:not(.error) > .error,
 main.error > :not(.error) {
   display: none;
-}
-
-section.upload.highlight-for-drop > :not(.drop):not(.error) {
-  visibility: hidden;
 }
