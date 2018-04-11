@@ -10,10 +10,18 @@ const renameAsync = promisify(fs.rename);
 const config = require('./config');
 
 const data = [
-  { id: 1, title: 'I caught a little fish...', file: '1.png' },
-  { id: 2, title: 'The fish I caught was this big.', file: '2.png' },
-  { id: 3, title: 'The fish I caught was quite big.', file: '3.png' },
-  { id: 4, title: 'I caught the biggest fish you\'ve ever seen.', file: '4.png' },
+  {
+    id: 1, title: 'I caught a little fish...', file: '1.png', author: 'Rich Boakes',
+  },
+  {
+    id: 2, title: 'The fish I caught was this big.', file: '2.png', author: 'Rich Boakes',
+  },
+  {
+    id: 3, title: 'The fish I caught was quite big.', file: '3.png', author: 'Rich Boakes',
+  },
+  {
+    id: 4, title: 'I caught the biggest fish you\'ve ever seen.', file: '4.png', author: 'Rich Boakes',
+  },
 ];
 
 data.nextId = 5;
@@ -58,6 +66,7 @@ module.exports.listPictures = (title, sort) => {
     id: item.id,
     title: item.title,
     file: config.webimg + item.file,
+    author: item.author,
   }));
 
   return retval;
@@ -114,7 +123,7 @@ module.exports.deletePicture = async (id) => {
 };
 
 
-module.exports.uploadPicture = async (reqFile, title) => {
+module.exports.uploadPicture = async (reqFile, title, author) => {
   // move the file where we want it
   const fileExt = reqFile.mimetype.split('/')[1] || 'png';
   const newFilename = reqFile.filename + '.' + fileExt;
@@ -130,10 +139,12 @@ module.exports.uploadPicture = async (reqFile, title) => {
     id: data.nextId,
     file: newFilename,
     title,
+    author,
   };
 
   data.nextId += 1;
   data.push(item);
-
-  return { id: item.id, title: item.title, file: config.webimg + item.file };
+  return {
+    id: item.id, title: item.title, file: config.webimg + item.file, author: item.author,
+  };
 };

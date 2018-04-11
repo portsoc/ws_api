@@ -24,7 +24,7 @@ const sqlPromise = mysql.createConnection(config.mysql);
 module.exports.listPictures = async (title, sort) => {
   const sql = await sqlPromise;
 
-  let query = 'SELECT id, title, filename FROM picture';
+  let query = 'SELECT id, title, filename, author FROM picture';
   if (title) {
     query += ' WHERE title LIKE ' + sql.escape('%' + title + '%');
   }
@@ -51,6 +51,7 @@ module.exports.listPictures = async (title, sort) => {
       id: row.id,
       title: row.title,
       file: config.webimg + row.filename,
+      author: row.author,
     };
   });
 };
@@ -74,7 +75,7 @@ module.exports.deletePicture = async (id) => {
 };
 
 
-module.exports.uploadPicture = async (reqFile, title) => {
+module.exports.uploadPicture = async (reqFile, title, author) => {
   const sql = await sqlPromise;
 
   // move the file where we want it
@@ -86,8 +87,11 @@ module.exports.uploadPicture = async (reqFile, title) => {
   const dbRecord = {
     filename: newFilename,
     title,
+    author,
   };
 
   const [rows] = await sql.query(sql.format('INSERT INTO picture SET ?', dbRecord));
-  return { id: rows.insertId, title: dbRecord.title, file: config.webimg + dbRecord.filename };
+  return {
+    id: rows.insertId, title: dbRecord.title, file: config.webimg + dbRecord.filename, author: dbRecord.author,
+  };
 };
