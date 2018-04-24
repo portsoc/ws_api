@@ -1,5 +1,6 @@
 'use strict';
 
+// replacing the original fetch so we can test the functions wihtout needing a server
 fetch = () => {
   return {
     ok: true,
@@ -20,13 +21,14 @@ QUnit.test(
     );
 
     const elM = document.querySelector('main');
-    assert.strictEqual(
-      elM.childElementCount,
-      (0+baseMainChildrenNumber),
-      'Before using the function, the element `main` must be empty of pictures.',
-    );
     assert.ok(
       document.querySelector('main .picture') == null,
+      'Before using the function, there must be no picture in `main`.',
+    );
+    assert.strictEqual(
+      elM.childElementCount,
+      baseMainChildrenNumber,
+      'The element `main` must only have the initial children.',
     );
 
     // with an empty array
@@ -35,7 +37,7 @@ QUnit.test(
 
     assert.strictEqual(
       el.length,
-      (0),
+      0,
       'When there is no picture to be added, there must be only the base code of the page.',
     );
 
@@ -49,7 +51,7 @@ QUnit.test(
 
     assert.strictEqual(
       elM.childElementCount,
-      (1+baseMainChildrenNumber),
+      1+baseMainChildrenNumber,
       'After passing one image entity to the function, there must be only one `section`.',
     );
 
@@ -60,11 +62,7 @@ QUnit.test(
     let images = as[0].querySelectorAll('img');
     let deletes = section.querySelectorAll('div');
 
-    assert.ok(
-      section.classList.contains('picture'),
-      'A `section` must have the class `picture`.',
-    );
-
+    // test the p inside the section
     assert.strictEqual(
       paragraphs.length,
       1,
@@ -73,9 +71,10 @@ QUnit.test(
     assert.strictEqual(
       paragraphs[0].className,
       'title',
-      'The first paragraph must have the class `title`',
+      'The paragraph must have the class `title`',
     );
 
+    // test the a inside the section
     assert.strictEqual(
       as.length,
       1,
@@ -91,6 +90,7 @@ QUnit.test(
       'The `<a>` element must have its `href` attribute set to the good value.',
     );
 
+    // test the image inside the a
     assert.strictEqual(
       images.length,
       1,
@@ -107,6 +107,7 @@ QUnit.test(
       'The `<img>` element must have its `alt` attribute set to the title of the image.',
     );
 
+    // test the div inside the section
     assert.strictEqual(
       deletes.length,
       1,
@@ -145,7 +146,11 @@ QUnit.test(
     }];
     window.forTesting.putPicturesInPage(data);
 
-    assert.strictEqual(elM.childElementCount, (2+baseMainChildrenNumber), 'After passing two image entity to the function, there must be two sections.');
+    assert.strictEqual(
+      elM.childElementCount,
+      2+baseMainChildrenNumber,
+      'After passing two image entities to the function, there must be two sections.',
+    );
 
     listOfSections = elM.querySelectorAll('section.picture');
     section = listOfSections[1];
@@ -154,20 +159,81 @@ QUnit.test(
     images = as[0].querySelectorAll('img');
     deletes = section.querySelectorAll('div');
 
-    assert.strictEqual(listOfSections.length, 2);
-    assert.ok(section.classList.contains('picture'));
-    assert.strictEqual(paragraphs.length, 1);
-    assert.strictEqual(paragraphs[0].className, 'title');
-    assert.strictEqual(as.length, 1);
-    assert.ok(as[0].classList.contains('img'));
-    assert.strictEqual(as[0].href, data[1].file);
-    assert.strictEqual(images.length, 1);
-    assert.strictEqual(images[0].src, data[1].file);
-    assert.strictEqual(images[0].alt, data[1].title);
-    assert.strictEqual(deletes.length, 1);
-    assert.ok(deletes[0].classList.contains('delete'));
-    assert.strictEqual(deletes[0].textContent, 'X');
-    assert.strictEqual(deletes[0].dataset.id, String(data[1].id));
-    assert.strictEqual(deletes[0].onclick, window.forTesting.requestDelete);
+    assert.strictEqual(
+      listOfSections.length,
+      2,
+      'There must be two sections in `main`.',
+    );
+
+    // test the p in the section
+    assert.strictEqual(
+      paragraphs.length,
+      1,
+      'There must be one `<p>` element in a `section`.',
+    );
+    assert.strictEqual(
+      paragraphs[0].className,
+      'title',
+      'The paragraph must have the class ',
+    );
+
+    // test the a inside the section
+    assert.strictEqual(
+      as.length,
+      1,
+      'There must be one `<a>` element in a `section`.',
+    );
+    assert.ok(
+      as[0].classList.contains('img'),
+      'The `<a>` element must have the class `img`.',
+    );
+    assert.strictEqual(
+      as[0].href,
+      data[1].file,
+      'The `<a>` element must have its `href` attribute set to the good value.',
+    );
+
+    // test the image inside the a
+    assert.strictEqual(
+      images.length,
+      1,
+      'In a `<a>` element there must be only one image.',
+    );
+    assert.strictEqual(
+      images[0].src,
+      data[1].file,
+      'The `<img>` element must have its `src` attribute set to the link of the image.',
+    );
+    assert.strictEqual(
+      images[0].alt,
+      data[1].title,
+      'The `<img>` element must have its `alt` attribute set to the title of the image.',
+    );
+
+    // test the div inside the section
+    assert.strictEqual(
+      deletes.length,
+      1,
+      'There must be only one `<div>` that displays an X in the `section`.',
+    );
+    assert.ok(
+      deletes[0].classList.contains('delete'),
+      'The `div` must have the class `delete`.',
+    );
+    assert.strictEqual(
+      deletes[0].textContent,
+      'X',
+      'The content of the `div` is `X`.',
+    );
+    assert.strictEqual(
+      deletes[0].dataset.id,
+      String(data[1].id),
+      'The `dataset.id` attribute of the `div` must be set to the `id` of the image.',
+    );
+    assert.strictEqual(
+      deletes[0].onclick,
+      window.forTesting.requestDelete,
+      'When clicking the `X`, the `requestDelete` function must run.',
+    );
   },
 );
