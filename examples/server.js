@@ -86,7 +86,7 @@ async function deletePicture(req, res) {
 
 async function uploadPicture(req, res) {
   try {
-    const retval = await db.uploadPicture(req.file, req.body.title);
+    const retval = await db.uploadPicture(req.file, req.body.title, req.body.author);
     if (req.accepts('html')) {
       // browser should go to the listing of pictures
       res.redirect(303, '/#' + retval.id);

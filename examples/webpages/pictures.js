@@ -10,6 +10,7 @@
   const btnUpload = document.querySelector('button.upload');
   const btnCancel = document.querySelector('button.cancel');
   const elTitle = elUpload.querySelector('input#title');
+  const elAuthor = elUpload.querySelector('input#author');
   const elPreview = elUpload.querySelector('.preview');
 
   window.addEventListener('load', init);
@@ -65,14 +66,20 @@
       container.classList.add('picture');
       elMain.appendChild(container);
 
+      let el = document.createElement('p');
+      el.classList.add('title');
+      el.textContent = pic.author;
+      container.appendChild(el);
+
       const a = document.createElement('a');
       a.classList.add('img');
       a.href = pic.file;
       container.appendChild(a);
 
-      let el = document.createElement('img');
+      el = document.createElement('img');
       el.src = pic.file;
       el.alt = pic.title;
+      el.title = pic.author;
       a.appendChild(el);
 
       el = document.createElement('p');
@@ -180,6 +187,7 @@
     const data = new FormData();
     data.append('picfile', file);
     data.append('title', elTitle.value);
+    data.append('author', elAuthor.value);
 
     btnCancel.disabled = true;
     btnUpload.disabled = true;
