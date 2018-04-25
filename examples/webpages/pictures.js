@@ -96,6 +96,10 @@
     }
   }
 
+  window.forTesting = {
+    putPicturesInPage,
+    requestDelete,
+  };
 
   function isDragAcceptable(e) {
     return e.dataTransfer.items.length > 0 &&

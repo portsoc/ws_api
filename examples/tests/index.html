@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WebScript</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-2.6.0.css">
+    <link rel="stylesheet" href="../webpages/style.css">
+</head>
+
+<body>
+    <div id="qunit">
+    </div>
+
+    <section>
+        <header>
+          <h1>JStagram</h1>
+          <div class="search">
+            <form id=searchform>
+              <input id="search" type="search" autofocus>&nbsp;<input type="button" id="searchnow" value="search">
+            </form>
+          </div>
+          <div class="sort">
+            Order:&nbsp;<select id="sort">
+              <option value="new">newest first</option>
+              <option value="old">oldest first</option>
+              <option value="a2z">A-Z</option>
+              <option value="z2a">Z-A</option>
+              <option value="rnd">random</option>
+            </select>
+          </div>
+        </header>
+
+        <main class="loading">
+          <!-- we will put the pictures here -->
+          <p class="loading">loading...</p>
+          <p class="error">sorry, something went wrong...</p>
+          <section class="upload" id="upload">
+            <a class="normal" href="/upload">upload a new picture</a>
+            <p class="normal hint">or drag a file here to upload</p>
+            <p class="drop">drop a file here to upload</p>
+            <p class="deny">cannot accept this file</p>
+            <form class="confirm">
+              <span class="preview"></span>
+              <label class="title">Title: <input id="title" type="text" size="40" placeholder="enter title" minlength="4" maxlength="60" required></label>
+              <button class="upload">upload</button>
+              <button class="cancel">cancel</button>
+            </form>
+          </section>
+        </main>
+    </section>
+
+</body>
+<script src="http://code.jquery.com/qunit/qunit-2.6.0.js"></script>
+<script src="../webpages/pictures.js"></script>
+<script src="index.js"></script>
+<script src="client-tests.js"></script>
+
+</html>
