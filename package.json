@@ -9,7 +9,7 @@
     "nodemon": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
     "forever": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
     "initsql": "mysql -u root -p < examples/sql_init.sql",
-    "test": "node ./node_modules/qunit/bin/cli.js -c ./examples/index.js -t ./examples/test.js | cat"
+    "test": "node ./node_modules/qunit/bin/cli.js -c ./examples/model-inmemory.js -t ./examples/test.js | cat"
   },
   "keywords": [
     "node"
@@ -30,15 +30,6 @@
   "dependencies": {
     "express": "^4.16.2",
     "multer": "^1.3.0",
-    "mysql2": "^1.5.1",
-    "node-fetch": "^1.7.3"
-  },
-  "jshintConfig": {
-    "globalstrict": true,
-    "predef": [
-      "QUnit",
-      "window",
-      "document"
-    ]
+    "mysql2": "^1.5.1"
   }
 }
