@@ -8,7 +8,8 @@
     "start": "node examples/server",
     "nodemon": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
     "forever": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
-    "initsql": "mysql -u root -p < examples/sql_init.sql"
+    "initsql": "mysql -u root -p < examples/sql_init.sql",
+    "test": "node ./node_modules/qunit/bin/cli.js -c ./examples/index.js -t ./examples/test.js | cat"
   },
   "keywords": [
     "node"
@@ -16,17 +17,28 @@
   "author": "Jacek Kopecky <jacek@jacek.cz> (http://jacek.cz/)",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^4.12.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.1",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "qnit": "^0.13.0",
+    "qunit": "^0.9.1"
   },
   "repository": "https://github.com/portsoc/ws_api.git",
   "dependencies": {
     "express": "^4.16.2",
     "multer": "^1.3.0",
-    "mysql2": "^1.5.1"
+    "mysql2": "^1.5.1",
+    "node-fetch": "^1.7.3"
+  },
+  "jshintConfig": {
+    "globalstrict": true,
+    "predef": [
+      "QUnit",
+      "window",
+      "document"
+    ]
   }
 }
