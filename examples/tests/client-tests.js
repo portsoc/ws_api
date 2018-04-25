@@ -1,7 +1,9 @@
 'use strict';
 
+/* global QUnit */
+
 // replacing the original fetch so we can test the functions wihtout needing a server
-fetch = () => {
+fetch = () => { // eslint-disable-line no-global-assign
   return {
     ok: true,
     json() { return []; },
