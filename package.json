@@ -4,7 +4,7 @@
   "description": "A simple example of an API-based web app.",
   "main": "index.js",
   "scripts": {
-    "lint": "node_modules/.bin/eslint /examples",
+    "lint": "node_modules/.bin/eslint .",
     "start": "node examples/server",
     "nodemon": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
     "forever": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
