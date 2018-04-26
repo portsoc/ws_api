@@ -9,7 +9,7 @@
     "nodemon": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
     "forever": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
     "initsql": "mysql -u root -p < examples/sql_init.sql",
-    "test": "node ./node_modules/qunit/bin/cli.js -c ./examples/model-inmemory.js -t ./examples/test.js | cat"
+    "test": "node ./node_modules/qunit/bin/qunit examples/test.js"
   },
   "keywords": [
     "node"
