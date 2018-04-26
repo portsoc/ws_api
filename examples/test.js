@@ -2,10 +2,13 @@
 
 'use strict';
 
+/* eslint-disable import/no-extraneous-dependencies */
+
 const pathImage = __dirname;
 const GONE = { status: 'gone' };
 
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 const db = require('./model-inmemory.js');
 
@@ -25,6 +28,8 @@ function arrayInOrder(arr, order) {
   }
   return retval;
 }
+
+QUnit.module('in-memory model');
 
 // These tests depend on the initial data in `model-inmemory.js`
 QUnit.test(
@@ -172,3 +177,29 @@ QUnit.test(
     }
   },
 );
+
+QUnit.module('API');
+
+QUnit.test(
+  'GET /api/pictures',
+  async (assert) => {
+    // start the server
+    const server = require('./server'); // eslint-disable-line global-require
+    await delay(1000); // wait for the server to start
+
+    const response = await fetch('http://localhost:8080/api/pictures');
+    assert.ok(response.ok, 'GET on /api/pictures is OK');
+
+    assert.deepEqual(
+      await response.json(),
+      arrayInOrder(initialData, [4, 3, 2, 1]),
+      'Without any parameters, it returns from newest to oldest.',
+    );
+
+    server.stopServer();
+  },
+);
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

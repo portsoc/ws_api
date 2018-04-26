@@ -43,10 +43,12 @@ app.delete('/api/pictures/:id', deletePicture);
 app.use('/', express.static(config.webpages, { extensions: ['html'] }));
 
 // start the server
-app.listen(8080, (err) => {
+const httpServer = app.listen(8080, (err) => {
   if (err) console.error('error starting server', err);
   else console.log('server started');
 });
+
+module.exports.stopServer = () => httpServer.close();
 
 
 /* server functions
