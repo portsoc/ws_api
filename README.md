@@ -1,9 +1,9 @@
 ws_api
 ======
 
-A simple example of an API-based web app.
+JStagram – a simple example of an API-based web app for sharing pictures.
 
-This week we are not doing tests, instead you should make sure all your previous tests are passing, and then you can play with the JStagram example app. For inspiration, here is a list of things you might consider doing in JStagram:
+In this code, we are not doing tests, instead you should play with the JStagram example app. For inspiration, here is a list of things you might consider doing in JStagram:
 
 
  1. new feature: extend the data models with a function that returns a count of pictures (as shown in slides); extend the HTTP API so the count is available at /api/pictures/count, and extend the page to show the current count of pictures somewhere.
@@ -13,7 +13,7 @@ This week we are not doing tests, instead you should make sure all your previous
  4. new feature: look for a thumbnail package and process the image into full resolution for viewing and thumbnail for the index page
  5. new feature if you like databases: make title search full-text - MySQL has fulltext indexes and search functions
 
-NB: if you're choosing an image processing package the benefit of choosing a native JS library is that it will work on any platform.  Conversely the benefit of something that's compiles for a specific OS is native speed.  We tend to favour potability for ease of development by many users.
+NB: if you're choosing an image processing package the benefit of choosing a native JS library is that it will work on any platform.  Conversely the benefit of something that's compiles for a specific OS is native speed.  We tend to favour portability for ease of development by many users.
 
 Running JStagram
 ----------------
