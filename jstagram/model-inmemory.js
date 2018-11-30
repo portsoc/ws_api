@@ -66,7 +66,7 @@ module.exports.listPictures = (title, sort) => {
 // comparator by title, ascending
 function titleAsc(a, b) {
   if (a.title<b.title) return -1;
-  else if (a.title===b.title) return 0;
+  if (a.title===b.title) return 0;
   return 1;
 }
 

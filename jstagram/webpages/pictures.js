@@ -98,8 +98,8 @@
 
 
   function isDragAcceptable(e) {
-    return e.dataTransfer.items.length > 0 &&
-      e.dataTransfer.items[0].type.startsWith('image/');
+    return e.dataTransfer.items.length > 0
+      && e.dataTransfer.items[0].type.startsWith('image/');
   }
 
   function dragOver(e) {
