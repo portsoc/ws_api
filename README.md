@@ -62,7 +62,7 @@ Running JStagram with a database
 3. Install and run MySQL.
     * If you're using your VM for this, MySQL is already installed and running.
 
-4. Edit `examples/config.json` so that your database `host`, `user` and `password` properties are correct.
+4. Edit `jstagram/config.json` so that your database `host`, `user` and `password` properties are correct.
     * The defaults should work on your VM.
 
 5. Install the database and tables using: `npm run initsql`

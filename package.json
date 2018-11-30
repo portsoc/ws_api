@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "node_modules/.bin/eslint .",
-    "start": "node examples/server",
-    "nodemon": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
-    "forever": "node_modules/.bin/nodemon -i examples/webpages/ examples/server",
-    "initsql": "mysql -u root -p < examples/sql_init.sql"
+    "start": "node jstagram/server",
+    "nodemon": "node_modules/.bin/nodemon -i jstagram/webpages/ jstagram/server",
+    "forever": "node_modules/.bin/nodemon -i jstagram/webpages/ jstagram/server",
+    "initsql": "mysql -u root -p < jstagram/sql_init.sql"
   },
   "keywords": [
     "node"
