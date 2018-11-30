@@ -6,7 +6,11 @@ create table if not exists pictures.picture (
   filename varchar(60)
 ) charset 'utf8mb4';
 
-insert ignore into pictures.picture values (1, 'I caught a little fish...', '1.png');
-insert ignore into pictures.picture values (2, 'The fish I caught was this big.', '2.png');
-insert ignore into pictures.picture values (3, 'The fish I caught was quite big.', '3.png');
-insert ignore into pictures.picture values (4, "I caught the biggest fish you've ever seen.", '4.png');
+insert ignore into pictures.picture values
+  (1, 'I caught a little fish...', '1.png');
+insert ignore into pictures.picture values
+  (2, 'The fish I caught was this big.', '2.png');
+insert ignore into pictures.picture values
+  (3, 'The fish I caught was quite big.', '3.png');
+insert ignore into pictures.picture values
+  (4, "I caught the biggest fish you've ever seen.", '4.png');
