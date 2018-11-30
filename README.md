@@ -6,6 +6,7 @@ A simple example of an API-based web app.
 This week we are not doing tests, instead you should make sure all your previous tests are passing, and then you can play with the JStagram example app. For inspiration, here is a list of things you might consider doing in JStagram:
 
 
+ 1. new feature: extend the data models with a function that returns a count of pictures (as shown in slides); extend the HTTP API so the count is available at /api/pictures/count, and extend the page to show the current count of pictures somewhere.
  1. fix: delete an uploaded file if it isn't an image (packages such as [file_type](https://www.npmjs.com/package/file-type) or [jimp](https://www.npmjs.com/package/jimp) may help here).
  2. new feature: add paging to the main page to go beyond the first 10 results (you might want to define query parameter `page` for that)
  3. new feature: add a per-picture page to show a single picture nicely
