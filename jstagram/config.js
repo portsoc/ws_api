@@ -12,6 +12,9 @@ module.exports.mysql = {
   // socketPath: '/tmp/mysql.sock', // uncomment this when testing with local non-networked mysql
 };
 
+// accepted file types of saving images
+module.exports.supported_file_types = ["png", "jpeg", "webm", "gif", "apng"];
+
 // constants for directories
 module.exports.webpages = path.join(__dirname, '/webpages/');
 module.exports.localimg = module.exports.webpages + 'img/';
