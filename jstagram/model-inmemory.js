@@ -114,10 +114,12 @@ module.exports.deletePicture = async (id) => {
 };
 
 
-module.exports.uploadPicture = async (reqFile, title) => {
+module.exports.uploadPicture = async (reqFile, title, fileExt) => {
   // move the file where we want it
-  const fileExt = reqFile.mimetype.split('/')[1] || 'png';
+  //const fileExt = reqFile.mimetype.split('/')[1] || 'png';
+  //console.log(fileExt);
   const newFilename = reqFile.filename + '.' + fileExt;
+  console.log(newFilename);
 
   try {
     await renameAsync(reqFile.path, config.localimg + newFilename);

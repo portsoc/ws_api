@@ -3,4 +3,6 @@
 node_modules
 npm-debug.log
 
-/webpages
+**/webpages
+**.idea
+**uploads
