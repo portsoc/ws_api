@@ -12,6 +12,12 @@ module.exports.mysql = {
   // socketPath: '/tmp/mysql.sock', // uncomment this when testing with local non-networked mysql
 };
 
+// postgres
+module.exports.pgsql = {
+  database: 'pictures',
+  statement_timeout: 5000, // 5s timeout
+};
+
 // constants for directories
 module.exports.webpages = path.join(__dirname, '/webpages/');
 module.exports.localimg = module.exports.webpages + 'img/';
