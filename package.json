@@ -8,7 +8,8 @@
     "start": "node jstagram/server",
     "nodemon": "node_modules/.bin/nodemon -i jstagram/webpages/ jstagram/server",
     "forever": "node_modules/.bin/nodemon -i jstagram/webpages/ jstagram/server",
-    "initmysql": "mysql -u root -p < jstagram/mysql_init.sql"
+    "initmysql": "mysql -u root -p < jstagram/mysql_init.sql",
+    "initpsql": "createdb pictures; psql pictures < jstagram/pgsql_init.sql"
   },
   "keywords": [
     "node"
