@@ -16,6 +16,7 @@ module.exports.mysql = {
 module.exports.pgsql = {
   database: 'pictures',
   statement_timeout: 5000, // 5s timeout
+  host: '/var/run/postgresql', // on our VMs, this is how to connect to postgres
 };
 
 // constants for directories
