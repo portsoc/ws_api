@@ -77,5 +77,9 @@ module.exports.uploadPicture = async (reqFile, title) => {
   // now add the file to the DB
   const query = 'INSERT INTO Picture (filename, title) VALUES ($1, $2) RETURNING *';
   const result = await sql.query(query, [newFilename, title]);
-  return { id: result.rows[0].id, title, file: config.webimg + newFilename };
+  return {
+    id: result.rows[0].id,
+    title,
+    file: config.webimg + newFilename,
+  };
 };
