@@ -18,7 +18,7 @@ sql.on('error', (err) => {
 });
 
 module.exports.listPictures = async (title, sort) => {
-  let query = 'SELECT id, title, filename FROM picture';
+  let query = 'SELECT id, title, filename FROM Picture';
   let param;
   if (title) {
     param = ['%' + title + '%'];
@@ -56,14 +56,14 @@ const GONE = { status: 'gone' };
 
 module.exports.deletePicture = async (id) => {
   // get the filename from the table
-  const result = await sql.query('SELECT filename FROM picture WHERE id = $1', [id]);
+  const result = await sql.query('SELECT filename FROM Picture WHERE id = $1', [id]);
   if (result.rows.length < 1) {
     throw GONE;
   }
 
   const filename = config.localimg + result.rows[0].filename;
 
-  await sql.query('DELETE FROM picture WHERE id=$1', [id]);
+  await sql.query('DELETE FROM Picture WHERE id=$1', [id]);
   await fs.unlinkAsync(filename);
 };
 
@@ -75,7 +75,7 @@ module.exports.uploadPicture = async (reqFile, title) => {
   await fs.renameAsync(reqFile.path, config.localimg + newFilename);
 
   // now add the file to the DB
-  const query = 'INSERT INTO picture (filename, title) values ($1, $2) returning *';
+  const query = 'INSERT INTO Picture (filename, title) VALUES ($1, $2) RETURNING *';
   const result = await sql.query(query, [newFilename, title]);
   return { id: result.rows[0].id, title, file: config.webimg + newFilename };
 };
