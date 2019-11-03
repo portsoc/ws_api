@@ -40,9 +40,9 @@ module.exports.listPictures = async (title, sort) => {
   query += ' LIMIT 10';
 
   // now query the table and output the results
-  const { rows } = await sql.query(query, param);
+  const result = await sql.query(query, param);
 
-  return rows.map((row) => {
+  return result.rows.map((row) => {
     return {
       id: row.id,
       title: row.title,
@@ -56,12 +56,12 @@ const GONE = { status: 'gone' };
 
 module.exports.deletePicture = async (id) => {
   // get the filename from the table
-  const { rows } = await sql.query('SELECT filename FROM picture WHERE id = $1', [id]);
-  if (rows.length < 1) {
+  const result = await sql.query('SELECT filename FROM picture WHERE id = $1', [id]);
+  if (result.rows.length < 1) {
     throw GONE;
   }
 
-  const filename = config.localimg + rows[0].filename;
+  const filename = config.localimg + result.rows[0].filename;
 
   await sql.query('DELETE FROM picture WHERE id=$1', [id]);
   await fs.unlinkAsync(filename);
@@ -76,7 +76,6 @@ module.exports.uploadPicture = async (reqFile, title) => {
 
   // now add the file to the DB
   const query = 'INSERT INTO picture (filename, title) values ($1, $2) returning *';
-  const dbRecord = [newFilename, title];
-  const { rows } = await sql.query(query, dbRecord);
-  return { id: rows[0].id, title, file: config.webimg + newFilename };
+  const result = await sql.query(query, [newFilename, title]);
+  return { id: result.rows[0].id, title, file: config.webimg + newFilename };
 };
