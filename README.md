@@ -11,7 +11,7 @@ In this code, we are not doing tests, instead you should play with the JStagram 
  2. new feature: add paging to the main page to go beyond the first 10 results (you might want to define query parameter `page` for that)
  3. new feature: add a per-picture page to show a single picture nicely
  4. new feature: look for a thumbnail package and process the image into full resolution for viewing and thumbnail for the index page
- 5. new feature if you like databases: make title search full-text - MySQL has fulltext indexes and search functions
+ 5. new feature if you like databases: make title search full-text - databases have fulltext indexes and search functions
 
 NB: if you're choosing an image processing package the benefit of choosing a native JS library is that it will work on any platform.  Conversely the benefit of something that's compiles for a specific OS is native speed.  We tend to favour portability for ease of development by many users.
 
@@ -58,16 +58,16 @@ Running JStagram with a database
 
 1. Do the first two steps above
 
-2. Change the mention of `model-inmemory` to `model-mysql` in `server.js`.
+2. Change the mention of `model-inmemory` to `model-pgsql` in `server.js`.
 
-3. Install and run MySQL.
-    * If you're using your VM for this, MySQL is already installed and running.
+3. Install and run PostgreSQL.
+    * If you're using your VM for this, PostgreSQL is already installed and running.
 
-4. Edit `jstagram/config.json` so that your database `host`, `user` and `password` properties are correct.
+4. Edit `jstagram/config.json` so that your database details are correct.
     * The defaults should work on your VM.
 
-5. Install the database and tables using: `npm run initmysql`
-    * If your `host` and `user` differ from the defaults, you may need to update `package.json` for the `initmysql` script to work.
+5. Install the database and tables using: `npm run initpgsql`
+    * If your database details differ from the defaults, you may need to update `package.json` for the `initpgsql` script to work.
 
 6. Start the server by typing:
 
