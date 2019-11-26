@@ -28,10 +28,10 @@ app.use('/', (req, res, next) => { console.log(new Date(), req.method, req.url);
 
 
 // server api
-//   POST /api/pictures     - upload a picture and its title, returns {id: ..., title: ..., file: '/img/...'}
 //   GET  /api/pictures     - list pictures ordered by time from most recent, returns [like above, like above, ...]
 //         ?order=...       - ordered by title or submission time or random
 //         ?title=...       - search by title substring
+//   POST /api/pictures     - upload a picture and its title, returns {id: ..., title: ..., file: '/img/...'}
 //   DELETE /api/pictures/x - returns http status code only
 
 app.get('/api/pictures', sendPictures);
