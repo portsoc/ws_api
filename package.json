@@ -26,7 +26,7 @@
   },
   "repository": "https://github.com/portsoc/ws_api.git",
   "dependencies": {
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "multer": "^1.3.0",
     "mysql2": "^1.5.1",
     "pg": "^7.12.1"
